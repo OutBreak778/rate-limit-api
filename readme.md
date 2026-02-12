@@ -1,5 +1,6 @@
 📦 Tech Stack
 json
+```json
 {
   "dependencies": {
     "express": "^4.21.2",        // Web framework
@@ -12,6 +13,7 @@ json
     "nodemon": "^3.1.9"          // Dev hot reload
   }
 }
+```
 ⚡ One-Command Setup
 bash
 # Clone & install
@@ -24,16 +26,17 @@ cp .env.example .env
 npm run dev
 That's it. Server runs on http://localhost:5000
 
+```json
 🔐 Environment Variables
 env
 PORT=5000
 MONGO_URI=mongodb+srv://<user>:<pass>@cluster.mongodb.net/taskflow
 SECRET_KEY=your_super_secret_key
 JWT_EXPIRY=7d
-📁 Structure (6 files only)
-text
+```
 
-
+### 📁 Structure (6 files only)
+```json
 rate-limit-api/
 ├── server.js                 # Entry point
 ├── .env                     # Config
@@ -50,29 +53,7 @@ rate-limit-api/
 │   └── middleware/
 │       └── auth.js         # JWT verification
 └── package.json
-
-
-🧱 Database Models
-User.js
-javascript
-const userSchema = {
-  name: { type: String, required: true, trim: true },
-  email: { type: String, required: true, unique: true, lowercase: true },
-  password: { type: String, required: true, minlength: 6 },
-  role: { type: String, enum: ['user', 'admin'], default: 'user' },
-  isActive: { type: Boolean, default: true }
-}, { timestamps: true });
-Task.js
-javascript
-const taskSchema = {
-  title: { type: String, required: true, trim: true },
-  description: { type: String, trim: true },
-  status: { type: String, enum: ['pending', 'in-progress', 'completed'], default: 'pending' },
-  priority: { type: String, enum: ['low', 'medium', 'high'], default: 'medium' },
-  dueDate: Date,
-  user: { type: mongoose.Types.ObjectId, ref: 'User', required: true }
-}, { timestamps: true });
-
+```
 
 🌐 API Reference
 Auth POST /api/v1/auth
@@ -92,19 +73,21 @@ GET	/stats/summary	-	Own/All(Admin)	200: {byStatus, byPriority, total}
 
 📦 Sample Requests
 Register
-bash
+```bash
 curl -X POST http://localhost:5000/api/v1/auth/sign-up \
   -H "Content-Type: application/json" \
   -d '{"name":"John","email":"john@test.com","password":"123456"}'
+```
 Create Task (with token)
-bash
+```bash
 curl -X POST http://localhost:5000/api/v1/task \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{"title":"Write docs","priority":"high"}'
+  ```
 Response Format
-json
 ```json
+{
   "success": true,
   "data": { ... },
   "count": 5,        // For GET /task
@@ -122,7 +105,7 @@ text
 ✅ Testing with Postman
 Collection Variables:
 
-***json
+```json
 {
   "baseUrl": "http://localhost:5000/api/v1",
   "token": "{{signInResponse.token}}",
@@ -141,6 +124,7 @@ text
 🚦 Error Handling
 json
 ```json
+{
   "success": false,
   "message": "Task not found",
   "statusCode": 404
@@ -153,13 +137,8 @@ Code	Description
 404	Resource not found
 409	Duplicate email
 500	Server error
-📊 Database Indexes (Performance)
 
-javascript
-// Add these in your models
-userSchema.index({ email: 1 });        // Fast login
-taskSchema.index({ user: 1, status: 1 }); // User task filters
-taskSchema.index({ createdAt: -1 });    // Recent tasks first
+📊 Database Indexes (Performance)
 🚀 Deploy in 30 Seconds
 Render:
 
@@ -175,7 +154,6 @@ bash
 1. `railway login`
 2. `railway init`
 3. `railway up`
-Docker:
  
 🔒 Security Features
 ✅ Passwords hashed with bcrypt (salt=10)
