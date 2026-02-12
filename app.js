@@ -11,10 +11,31 @@ const app = express()
 dotenv.config({
     path: '.env'
 })
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.PRODUCTION_URL
+]
+
 app.use(cors({
-    origin: ["http://localhost:5173", process.env.PRODUCTION_URL],
-    credentials: true,
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true)
+
+    // Allow exact matches
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true)
+    }
+
+    // Allow any Vercel preview subdomain
+    if (origin.endsWith(".vercel.app")) {
+      return callback(null, true)
+    }
+
+    callback(new Error("Not allowed by CORS"))
+  },
+  credentials: true
 }))
+
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 app.use(cookieParser())
