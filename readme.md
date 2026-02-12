@@ -55,22 +55,6 @@ rate-limit-api/
 └── package.json
 ```
 
-🌐 API Reference
-Auth POST /api/v1/auth
-Endpoint	Body	Response
-/sign-up	{name, email, password, role?}	201: {token, user}
-/sign-in	{email, password}	200: {token, user}
-/sign-out	-	200: {success}
-Tasks GET /api/v1/task 🔒
-Method	Endpoint	Body	Access	Response
-POST	/	{title, description?, priority?}	User/Admin	201: Task
-GET	/	?status&priority	User: Own, Admin: All	200: Task[]
-GET	/:id	-	Own/Any(Admin)	200: Task
-PUT	/:id	{status, title, ...}	Own/Any(Admin)	200: Task
-DELETE	/:id	-	Own/Any(Admin)	200: {success}
-GET	/stats/summary	-	Own/All(Admin)	200: {byStatus, byPriority, total}
-
-
 📦 Sample Requests
 Register
 ```bash

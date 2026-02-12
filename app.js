@@ -12,7 +12,7 @@ dotenv.config({
     path: '.env'
 })
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", process.env.PRODUCTION_URL],
     credentials: true,
 }))
 app.use(express.urlencoded({extended: true}))
