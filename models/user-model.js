@@ -49,10 +49,8 @@ const userSchema = new Schema({
     }
 }, {timestamps: true})
 
-// Add index for role-based queries
 userSchema.index({ role: 1 });
 
-// Simple method to check if user is admin
 userSchema.methods.isAdmin = function() {
     return this.role === "admin";
 };

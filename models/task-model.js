@@ -35,7 +35,6 @@ const taskSchema = new Schema({
     }
 }, {timestamps: true})
 
-// Index for faster queries
 taskSchema.index({ user: 1, status: 1 })
 taskSchema.index({ dueDate: 1 })
 
