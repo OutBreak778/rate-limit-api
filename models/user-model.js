@@ -13,18 +13,16 @@ const userSchema = new Schema({
     email: {
         type: String,
         unique: true,
-        required: [true, "user Email is required"],
+        required: [true, "User Email is required"],
         lowercase: true,
         trim: true,
-        match: [/\S+@\S+\.\S+/, "please enter a valid email"]
+        match: [/\S+@\S+\.\S+/, "Please enter a valid email"]
     },
     password: {
         type: String,
-        unique: true,
-        required: [true, "user Password is required"],
+        required: [true, "User Password is required"],
         trim: true,
-        minLen: 3,
-        maxLen: 10
+        minLen: [3, "Password must be at least 6 characters long"],
     },
     age: {
         type: Number,
@@ -38,7 +36,25 @@ const userSchema = new Schema({
         type: String,
         minLen: 3,
         maxLen: 100
+    },
+    role: {
+        type: String,
+        enum: ["user", "admin"],
+        default: "user",
+        required: true
+    },
+    isActive: {
+        type: Boolean,
+        default: true
     }
 }, {timestamps: true})
 
-export const User = mongoose.model('user', userSchema)
+// Add index for role-based queries
+userSchema.index({ role: 1 });
+
+// Simple method to check if user is admin
+userSchema.methods.isAdmin = function() {
+    return this.role === "admin";
+};
+
+export const User = mongoose.model('User', userSchema)

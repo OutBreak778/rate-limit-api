@@ -5,7 +5,7 @@ import userRouter from "./routes/user-route.js"
 import subscriptionRouter from "./routes/subscription-route.js"
 import cookieParser from "cookie-parser"
 import { errorMiddleware } from "./middlewares/error.js"
-import { arcjetMiddleware } from "./middlewares/arcjet.js"
+import taskRouter from "./routes/task-route.js"
 
 const app = express()
 dotenv.config({
@@ -17,10 +17,11 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use(errorMiddleware)
-app.use(arcjetMiddleware)
 
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/subscription", subscriptionRouter)
+app.use("/api/v1/subscription", subscriptionRouter)
+app.use("/api/v1/task", taskRouter)
 
 export default app

@@ -1,21 +1,30 @@
 import mongoose from "mongoose";
- 
-const mongodb = process.env.MONGO_URI;
-if (!mongodb) {
-  throw new Error(
-    "Please provide a valid URL of MongoDb to access the Database."
-  );
-}
+import dotenv from 'dotenv'
+import dns from 'node:dns';
 
-const connectToDb = async () => {
-  try {
-    await mongoose
-      .connect(mongodb)
-      .then(() => console.log("Connected to Database"))
-      .catch((error) => console.log(`Error in database:  ${error.message}`))
-  } catch (error) {
-    console.log(error.message);
-  }
+dns.setServers(['8.8.8.8', '8.8.4.4']);
+dns.setDefaultResultOrder('ipv4first'); 
+
+dotenv.config()
+
+const ConnectToDB = async () => {
+    try {
+        const URI = process.env.MONGO_URI; // Make sure this matches your .env key
+        
+        if (!URI) {
+            throw new Error("MONGO_URI is not defined in .env file")
+        }
+        await mongoose.connect(URI)
+        
+        console.log("✅ MongoDB Connected Successfully")
+        
+        mongoose.connection.on('error', (err) => {
+            console.error('❌ MongoDB connection error:', err)
+        })
+
+    } catch (error) {
+        console.error("❌ Database connection failed:", error.message)
+    }
 };
 
-export default connectToDb;
+export default ConnectToDB;
